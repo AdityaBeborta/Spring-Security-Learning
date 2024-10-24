@@ -22,7 +22,6 @@ private UserRepository userRepository;
         if(byUsername ==null){
             throw new UsernameNotFoundException("user doesn't exist");
         }
-        byUsername.setPassword("{noop}"+byUsername.getPassword());
         return new UserDetailsImpl(byUsername);
     }
 }
