@@ -12,8 +12,8 @@ public class ApiController {
 
     //endpoint one
     @GetMapping("/route1")
-    public String route1(Principal principal) {
-        return "This is for protected route 1 " + principal.getName();
+    public String route1() {
+        return "This is for protected route 1 ";
     }
 
     //endpoint two

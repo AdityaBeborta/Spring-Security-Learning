@@ -3,6 +3,7 @@ package com.learn.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,15 +17,16 @@ public class SpringSecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
-//    @Bean
-//    //overriding the default security filter chain
-//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.csrf(Customizer -> Customizer.disable());
-//        httpSecurity.httpBasic();
-//        httpSecurity.authorizeHttpRequests(request -> request.anyRequest().authenticated());
-////        httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        return httpSecurity.build();
-//    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(httpReq -> {
+            httpReq.requestMatchers("/api/route1").permitAll().anyRequest().authenticated();
+        });
+        http.formLogin(Customizer.withDefaults());
+        http.httpBasic(Customizer.withDefaults());
+        return http.build();
+
+    }
 
     //we are saying not to read user details from application properties but from in memory
     //with this code we cannot achieve the authentication from DB, so we will need to comment this code
