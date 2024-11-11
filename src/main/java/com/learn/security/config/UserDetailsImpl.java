@@ -1,8 +1,13 @@
 package com.learn.security.config;
+
 import com.learn.security.entity.Users;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -14,7 +19,8 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> roles = this.users.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toSet());
+        return roles;
     }
 
     @Override
