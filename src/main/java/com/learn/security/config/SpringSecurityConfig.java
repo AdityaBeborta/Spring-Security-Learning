@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@EnableMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -21,7 +23,7 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(httpReq -> {
-            httpReq.requestMatchers("/user/register").permitAll().requestMatchers("/user/**").hasRole("GUEST")
+            httpReq.requestMatchers("/methodLevelAuthorization/**").permitAll().requestMatchers("/user/**").hasRole("GUEST")
                     .requestMatchers("/admin/menu/**").hasRole("ADMIN");
         });
         http.formLogin(Customizer.withDefaults());
